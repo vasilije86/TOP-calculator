@@ -14,9 +14,6 @@ function divide(a,b){
         return a / b;
     }
 }
-let a = null;
-let b = null;
-let operator = null;
 function operate(a,b,operator){
     switch(operator){
         case '+' :
@@ -29,6 +26,27 @@ function operate(a,b,operator){
             return divide(a,b);
         default:
             return "Input a valid operator";
-
     }
+}
+let a = null;
+let b = null;
+let operator = null;
+let displayValue = 0;
+let resetDisplay = false;
+function updateDisplay() {
+    const display = document.querySelector('.display');
+    display.textContent = displayValue;
+}
+function appendDigit(digit){
+    if (resetDisplay){
+        displayValue = "";
+        resetDisplay = false;
+    }
+    if (displayValue ===0 && digit ===0) return;
+    if(displayValue ===0 && digit!== ".") {
+        displayValue = digit;
+    } else{
+        displayValue += digit;
+    }
+    updateDisplay()
 }
