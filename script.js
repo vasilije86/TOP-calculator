@@ -25,7 +25,7 @@ function operate(a,b,operator){
         case "/":
             return divide(a,b);
         default:
-            return "Input a valid operator";
+            return null;
     }
 }
 let a = null;
@@ -39,14 +39,55 @@ function updateDisplay() {
 }
 function appendDigit(digit){
     if (resetDisplay){
-        displayValue = "";
+        displayValue = "0";
         resetDisplay = false;
     }
-    if (displayValue ===0 && digit ===0) return;
-    if(displayValue ===0 && digit!== ".") {
+    if (displayValue === '0' && digit ==='0') return;
+    if(displayValue ==='0' && digit!== ".") {
         displayValue = digit;
     } else{
         displayValue += digit;
     }
     updateDisplay()
 }
+function setOperator(op){
+    if (a=== null){
+        a = parseFloat(displayValue);
+    } else if(!resetDisplay) {
+        b = parseFloat(displayValue);
+        a = operate(a,b,operator);
+        displayValue = a.toString();
+        updateDisplay();
+    }
+    operator = op;
+    resetDisplay = true;
+}
+function clearDisplay() {
+    displayValue = '0';
+    a = null;
+    b = null;
+    operator = null;
+    clearDisplay = false;
+    updateDisplay();
+}
+function calculateResult() {
+    if (a!== null && operator !== null){
+        b = parseFloat(displayValue);
+        const result = operate(a,b,operator);
+        displayValue = result.toString();
+        updateDisplay();
+        a = result;
+        b = null;
+        operator = null;
+        resetDisplay = true;
+    }
+}
+document.querySelectorAll('.digit').forEach(button =>{
+    button.addEventListener('click', () => appendDigit(button.textContent));
+});
+document.querySelectorAll('.operator').forEach(button =>{
+    button.addEventListener('click', () => setOperator(button.textContent));
+});
+document.querySelector(".clear").addEventListener('click', clearDisplay);
+document.querySelector('.equals').addEventListener('click', calculateResult);
+updateDisplay();
